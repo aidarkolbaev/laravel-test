@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function (Request $request) {
-    $page = (int)$request->query('page', 1);
-    $limit = 10;
-    $offset = ($page - 1) * $limit;
-    $usersNum = User::query()->count();
-    $users = User::query()->offset($offset)->limit($limit)->get();
-    return view('users', ['users' => $users, 'usersNum' => $usersNum]);
-});
+Route::get('/login', 'UserController@login');
+Route::post('/login', 'UserController@login');
+Route::get('/register', 'UserController@create');
+Route::post('/register', 'UserController@store');
+
+Route::get('/', 'ArticleController@index');
+Route::post('/article', 'ArticleController@create');
+Route::get('/article/{id}', 'ArticleController@show');
+Route::post('/article/{id}', 'ArticleController@update');
