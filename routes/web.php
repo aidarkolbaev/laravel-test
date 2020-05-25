@@ -23,3 +23,4 @@ Route::get('/', 'ArticleController@index');
 Route::match(['get', 'post'], '/article', 'ArticleController@create')->middleware('auth');
 Route::get('/article/{id}', 'ArticleController@show');
 Route::match(['get', 'post'], '/article/{id}/edit', 'ArticleController@edit')->middleware('auth');
+Route::get('/article/{id}/delete', 'ArticleController@delete')->middleware('auth');

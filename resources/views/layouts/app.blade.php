@@ -11,12 +11,11 @@
     <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <style>
-        /* width */
         ::-webkit-scrollbar {
             width: 7px;
+            background: transparent;
         }
 
-        /* Handle */
         ::-webkit-scrollbar-thumb {
             background: #38b2ac;
             border-radius: 7px;
@@ -35,13 +34,9 @@
 
 @yield('content')
 
-<div class="absolute w-full top-0 left-0 h-full z-40 transition-all duration-300 hide" id="menu">
+<div class="fixed w-full top-0 left-0 h-full z-40 transition-all duration-300 hide" id="menu">
     <div class="absolute h-full w-full bg-black bg-opacity-25" onclick="toggleMenu()"></div>
     <div class="bg-white h-full shadow-md absolute left-0 p-4 px-8 md:px-16">
-        <div class="mt-2 flex hover:text-teal-600">
-            <span class="material-icons mr-2">dashboard</span>
-            <a href="/">Главная</a>
-        </div>
         <div class="mt-2 flex hover:text-teal-600">
             <span class="material-icons mr-2">list_alt</span>
             <a href="/">Все статьи</a>

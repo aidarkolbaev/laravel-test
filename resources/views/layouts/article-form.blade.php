@@ -18,7 +18,8 @@
                 <div class="mt-4">
                     <label class="block" for="title">Заголовок</label>
                     <div>
-                        <input class="w-full bg-gray-100 p-1" autocomplete="none" type="text" name="title" id="title">
+                        <input class="w-full bg-gray-100 p-1"
+                               value="@yield('article-title')" autocomplete="none" type="text" name="title" id="title">
                     </div>
                 </div>
                 <div class="mt-4">
