@@ -9,11 +9,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <style>
-        .hide {
-            display: none;
+        /* width */
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #38b2ac;
+            border-radius: 7px;
         }
     </style>
+    @yield('styles')
     <title>@yield('title')</title>
 </head>
 <body class="h-full w-full bg-gray-100 pt-12 relative">
@@ -37,18 +46,26 @@
             <span class="material-icons mr-2">list_alt</span>
             <a href="/">Все статьи</a>
         </div>
-        <div class="mt-2 flex hover:text-teal-600">
-            <span class="material-icons mr-2">add_circle_outline</span>
-            <a href="/article">Создать статью</a>
-        </div>
-        <div class="mt-2 flex hover:text-teal-600">
-            <span class="material-icons mr-2">person</span>
-            <a href="/login">Авторизация</a>
-        </div>
-        <div class="mt-2 flex hover:text-teal-600">
-            <span class="material-icons mr-2">person_add</span>
-            <a href="/register">Регистрация</a>
-        </div>
+        @auth
+            <div class="mt-2 flex hover:text-teal-600">
+                <span class="material-icons mr-2">add_circle_outline</span>
+                <a href="/article">Создать статью</a>
+            </div>
+            <div class="mt-2 flex hover:text-teal-600">
+                <span class="material-icons mr-2">exit_to_app</span>
+                <a href="/logout">Выйти</a>
+            </div>
+        @endauth
+        @guest
+            <div class="mt-2 flex hover:text-teal-600">
+                <span class="material-icons mr-2">person</span>
+                <a href="/login">Авторизация</a>
+            </div>
+            <div class="mt-2 flex hover:text-teal-600">
+                <span class="material-icons mr-2">person_add</span>
+                <a href="/register">Регистрация</a>
+            </div>
+        @endguest
     </div>
 </div>
 
@@ -68,4 +85,5 @@
         }
     }
 </script>
+@yield('javascript')
 </html>

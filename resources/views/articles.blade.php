@@ -11,7 +11,7 @@
                     <div class="text-lg text-teal-500">{{ $article->title }}</div>
                 </a>
                 <div class="my-2 break-all p-2 rounded bg-gray-100">
-                    {{!! $article->content !!}}
+                    {!! $article->content !!}
                 </div>
                 <div class="flex justify-between mt-4">
                     <div class="text-xs text-gray-600">
@@ -24,5 +24,12 @@
                 </div>
             </div>
         @endforeach
+        <div class="my-6 text-center max-w-2xl overflow-x-auto">
+            @for($i = 1; $i <= $pages; $i++)
+                <div class="inline-block mx-2 {{ $currentPage === $i ? 'text-lg text-teal-600' : '' }}">
+                    <a href="?page={{ $i }}">{{ $i }}</a>
+                </div>
+            @endfor
+        </div>
     </div>
 @endsection

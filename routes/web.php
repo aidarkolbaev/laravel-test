@@ -15,11 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::match(['get', 'post'], '/login', 'UserController@login');
+Route::match(['get', 'post'], '/login', 'UserController@login')->name('login');
 Route::match(['get', 'post'], '/register', 'UserController@register');
+Route::any('/logout', 'UserController@logout')->middleware('auth');
 
 Route::get('/', 'ArticleController@index');
-Route::get('/article', 'ArticleController@create');
-Route::post('/article', 'ArticleController@store');
+Route::match(['get', 'post'], '/article', 'ArticleController@create')->middleware('auth');
 Route::get('/article/{id}', 'ArticleController@show');
-Route::post('/article/{id}', 'ArticleController@update');
+Route::match(['get', 'post'], '/article/{id}/edit', 'ArticleController@edit')->middleware('auth');

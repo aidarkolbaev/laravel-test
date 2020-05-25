@@ -4,15 +4,17 @@
     <div class="flex justify-center items-center w-full h-full">
         <div class="p-6 shadow-lg rounded bg-white">
             <div class="text-center text-lg">@yield('form-title')</div>
-            @if ($errors->any())
-                <div class="bg-red-300 text-red-800 px-4 py-2 text-sm my-4">
-                    {{ $message }}
-                </div>
+            @if($errors->any())
+                @foreach ($errors->all() as $error)
+                    <div class="bg-red-300 text-red-800 px-4 py-2 rounded text-sm my-4">
+                        {{ $error }}
+                    </div>
+                @endforeach
             @endif
             <form method="post" action="@yield('form-action')">
                 @csrf
                 <div class="mt-4">
-                    <label class="block" for="username">Имя:</label>
+                    <label class="block" for="username">Логин:</label>
                     <div>
                         <input class="w-full bg-gray-100 p-1" autocomplete="none" type="text" name="username" id="username">
                     </div>

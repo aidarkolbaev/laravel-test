@@ -6,6 +6,8 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -23,8 +25,10 @@ class UserController extends Controller
                 'username' => 'required|max:50',
                 'password' => 'required|max:50'
             ]);
-            $user = User::query()->where(['username' => $data['username']])->get();
-            return redirect('/');
+            if (Auth::attempt($data)) {
+                return redirect()->intended();
+            }
+            return view('login')->withErrors(['invalid_auth' => 'Неправильный логин или пароль']);
         }
         return view('login');
     }
@@ -41,10 +45,19 @@ class UserController extends Controller
                 'username' => 'required|max:50',
                 'password' => 'required|max:50'
             ]);
+            $data['password'] = Hash::make($data['password']);
             $user = new User($data);
             $user->save();
-            return redirect('/');
+            return redirect('/login');
         }
         return view('register');
+    }
+
+    /**
+     * Logout user
+     */
+    public function logout() {
+        Auth::logout();
+        return redirect('/');
     }
 }
