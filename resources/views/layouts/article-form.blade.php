@@ -31,6 +31,13 @@
                     </div>
                 </div>
                 <div class="mt-4">
+                    <label class="block" for="article_links">Привязка статей</label>
+                    <div>
+                        <input type="hidden" name="article_links" id="article_links">
+                        @yield('article-links')
+                    </div>
+                </div>
+                <div class="mt-4">
                     <div class="text-right">
                         <button type="submit" class="px-2 py-1 bg-teal-500 text-white rounded text-sm">Сохранить
                         </button>
@@ -53,5 +60,15 @@
             .catch(error => {
                 console.error(error);
             });
+
+
+
+        axios.get('/articles', { params: {title: 'D'} })
+            .then((res) => {
+                console.log('res', res)
+            })
+            .catch((err) => {
+                console.log('err', err)
+            })
     </script>
 @endsection

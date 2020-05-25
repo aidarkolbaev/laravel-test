@@ -2114,10 +2114,6 @@ process.umask = function() { return 0; };
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
-function toggleMenu(event) {
-  console.log('event', event);
-}
-
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

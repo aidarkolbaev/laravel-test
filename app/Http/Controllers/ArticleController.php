@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Article;
 use App\User;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -110,5 +112,21 @@ class ArticleController extends Controller
             Article::destroy($id);
         }
         return redirect('/');
+    }
+
+    /**
+     * @param Request $request
+     * @return Builder[]|Collection
+     */
+    public function search(Request $request)
+    {
+        $title = $request->query('title', null);
+        if (!$title) {
+            return [];
+        }
+        return Article::query()
+            ->where('title', 'like', '%' . $title . '%')
+            ->limit(20)
+            ->get();
     }
 }
