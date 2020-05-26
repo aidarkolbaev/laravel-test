@@ -31,10 +31,22 @@
                     </div>
                 </div>
                 <div class="mt-4">
-                    <label class="block" for="article_links">Привязка статей</label>
-                    <div>
-                        <input type="hidden" name="article_links" id="article_links">
-                        @yield('article-links')
+                    <label class="block" for="search">Привязка статей</label>
+                    <div class="relative">
+                        <input
+                            class="w-full bg-gray-100 p-1"
+                            onkeyup="searchArticles(this)"
+                            type="text"
+                            autocomplete="none"
+                            placeholder="Введите заголовок статьи..."
+                            id="search"
+                        >
+                        <div
+                            class="result absolute border top-0 overflow-hidden rounded hidden mt-10 w-full bg-white shadow-lg"
+                            id="search_result">
+                        </div>
+                        <div id="articles_list"></div>
+                        <input type="hidden" name="articles" id="articles">
                     </div>
                 </div>
                 <div class="mt-4">
@@ -54,21 +66,103 @@
         let options = {
             toolbar: ['bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
         };
-        ClassicEditor.create(document.querySelector('#content'), options)
-            .then((e) => {
+        ClassicEditor.create(document.querySelector('#content'), options);
+
+
+        var searchTimeout;
+        let result = document.getElementById('search_result');
+
+        function searchArticles(elem) {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(function () {
+                let search = elem.value.trim();
+                if (search.length >= 1) {
+                    result.innerHTML = '';
+                    axios.get('/articles', {params: {title: search}})
+                        .then((res) => {
+                            if (res.data && res.data.length) {
+                                res.data.forEach(function (article, index) {
+                                    let elem = document.createElement('div');
+                                    elem.className = 'result p-2 text-sm border-b cursor-pointer hover:bg-gray-200';
+                                    if (isLinkedArticleExists(article.id)) {
+                                        elem.classList.add('bg-teal-100')
+                                    }
+                                    elem.innerText = article.title;
+                                    elem.setAttribute('data-article-id', article.id);
+                                    result.append(elem)
+                                })
+                            } else {
+                                result.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>'
+                            }
+                            result.classList.remove('hidden');
+                        })
+                        .catch((err) => {
+                            result.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>'
+                            result.classList.remove('hidden');
+                        })
+                }
+            }, 1000);
+        }
+
+
+        let linkedArticles = [];
+        let articlesList = document.getElementById('articles_list');
+        let articlesField = document.getElementById('articles');
+
+        function addLinkedArticle(article) {
+            linkedArticles.push(article);
+            refreshArticlesList();
+            refreshArticlesField();
+        }
+
+        function removeLinkedArticle(id) {
+            let index = linkedArticles.findIndex((article) => article.id === id);
+            if (index !== -1) {
+                linkedArticles.splice(index, 1);
+                refreshArticlesList();
+                refreshArticlesField();
+            }
+        }
+
+        function isLinkedArticleExists(id) {
+            return linkedArticles.findIndex((article) => article.id === id) !== -1
+        }
+
+        function refreshArticlesList() {
+            articlesList.innerHTML = '';
+            linkedArticles.forEach(function (article, index) {
+                let articleElem = document.createElement('div');
+                articleElem.className = 'inline-block p-1 text-xs mt-1 mr-2 bg-gray-200 rounded-md';
+                articleElem.setAttribute('data-article-id', article.id);
+                articleElem.innerHTML = article.title;
+                articleElem.onclick = function (event) {
+                    removeLinkedArticle(article.id)
+                };
+                articlesList.append(articleElem);
             })
-            .catch(error => {
-                console.error(error);
+        }
+
+        function refreshArticlesField() {
+            let articleIds = [];
+            linkedArticles.forEach(function (article, index) {
+                articleIds.push(article.id);
             });
+            articlesField.value = articleIds.join(',')
+        }
 
+        document.addEventListener('click', function (event) {
+            let elem = event.target;
+            if (elem.classList.contains('result')) {
+                let article = {id: parseInt(elem.getAttribute('data-article-id')), title: elem.innerText};
+                if (isLinkedArticleExists(article.id)) {
+                    removeLinkedArticle(article.id)
+                } else {
+                    addLinkedArticle(article)
+                }
+            } else if (!result.classList.contains('hidden')) {
+                result.classList.add('hidden');
+            }
+        })
 
-
-        axios.get('/articles', { params: {title: 'D'} })
-            .then((res) => {
-                console.log('res', res)
-            })
-            .catch((err) => {
-                console.log('err', err)
-            })
     </script>
 @endsection

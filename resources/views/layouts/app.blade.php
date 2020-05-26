@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
     <style>
         ::-webkit-scrollbar {
             width: 7px;
@@ -33,7 +32,7 @@
 
 @yield('content')
 
-<div class="fixed w-full top-0 left-0 h-full z-40 transition-all duration-300 hide" id="menu">
+<div class="fixed w-full top-0 left-0 h-full z-40 transition-all duration-300 hidden" id="menu">
     <div class="absolute h-full w-full bg-black bg-opacity-25" onclick="toggleMenu()"></div>
     <div class="bg-white h-full shadow-md absolute left-0 p-4 px-8 md:px-16">
         <div class="mt-2 flex hover:text-teal-600">
@@ -69,13 +68,13 @@
     function toggleMenu() {
         let menu = document.getElementById('menu');
         if (menu) {
-            let isOpen = !(menu.classList.contains('hide'));
+            let isOpen = !(menu.classList.contains('hidden'));
             if (isOpen) {
                 document.body.classList.remove('overflow-hidden');
-                menu.classList.add('hide');
+                menu.classList.add('hidden');
             } else {
                 document.body.classList.add('overflow-hidden');
-                menu.classList.remove('hide');
+                menu.classList.remove('hidden');
             }
         }
     }
