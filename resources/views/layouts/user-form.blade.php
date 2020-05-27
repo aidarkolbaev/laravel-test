@@ -16,7 +16,7 @@
                 <div class="mt-4">
                     <label class="block" for="username">Логин:</label>
                     <div>
-                        <input class="w-full bg-gray-100 p-1" autocomplete="none" type="text" name="username" id="username">
+                        <input class="w-full bg-gray-100 p-1" autocomplete="off" type="text" name="username" id="username">
                     </div>
                 </div>
                 <div class="mt-4">

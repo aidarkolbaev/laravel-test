@@ -19,7 +19,7 @@
                     <label class="block" for="title">Заголовок</label>
                     <div>
                         <input class="w-full bg-gray-100 p-1"
-                               value="@yield('article-title')" autocomplete="none" type="text" name="title" id="title">
+                               value="@yield('article-title')" autocomplete="off" type="text" name="title" id="title">
                     </div>
                 </div>
                 <div class="mt-4">
@@ -37,7 +37,7 @@
                             class="w-full bg-gray-100 p-1"
                             onkeyup="searchArticles(this)"
                             type="text"
-                            autocomplete="none"
+                            autocomplete="off"
                             placeholder="Введите заголовок статьи..."
                             id="search"
                         >
@@ -69,7 +69,7 @@
         ClassicEditor.create(document.querySelector('#content'), options);
 
 
-        var searchTimeout;
+        let searchTimeout;
         let result = document.getElementById('search_result');
 
         function searchArticles(elem) {
@@ -97,7 +97,7 @@
                             result.classList.remove('hidden');
                         })
                         .catch((err) => {
-                            result.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>'
+                            result.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>';
                             result.classList.remove('hidden');
                         })
                 }

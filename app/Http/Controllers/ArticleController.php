@@ -58,9 +58,17 @@ class ArticleController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->validate([
                 'title' => 'required|max:255',
-                'content' => 'required'
+                'content' => 'required',
+                'articles' => 'string|nullable'
             ]);
             $article = new Article($data);
+            $articles = explode(',', $data['articles']);
+            foreach ($articles as $articleId) {
+                if (is_numeric($articleId)) {
+                    $article->articles()->attach((int)$articleId);
+                }
+            }
+
             Auth::user()->articles()->save($article);
             return redirect('/');
         }
@@ -82,14 +90,20 @@ class ArticleController extends Controller
             return redirect('/article/' . $id);
         }
         if ($request->isMethod('post')) {
-
             $data = $request->validate([
                 'title' => 'required|max:255',
-                'content' => 'required'
+                'content' => 'required',
+                'articles' => 'string|nullable'
             ]);
-            /** @var Article $article */
-            $article->update($data);
+            $article->articles()->detach();
+            $articles = explode(',', $data['articles']);
+            foreach ($articles as $articleId) {
+                if (is_numeric($articleId)) {
+                    $article->articles()->attach((int)$articleId);
+                }
+            }
 
+            $article->update($data);
             return redirect('/article/' . $id);
         }
         return view('article-edit', ['article' => $article]);

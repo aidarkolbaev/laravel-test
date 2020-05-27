@@ -6,7 +6,7 @@
 @section('content')
     <div class="px-6 py-2 max-w-2xl mx-auto">
         @foreach ($articles as $article)
-            <div class="p-3 my-4 bg-white shadow-md shadow rounded">
+            <div class="p-3 my-4 bg-white shadow rounded">
                 <a href="/article/{{ $article->id }}">
                     <div class="text-lg text-teal-500">{{ $article->title }}</div>
                 </a>

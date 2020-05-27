@@ -28,7 +28,7 @@ class Article extends Model
     /**
      * @return BelongsToMany
      */
-    public function linkedArticles()
+    public function articles()
     {
         return $this->belongsToMany(
             'App\Article', 'article_article', 'article_id', 'linked_article_id'
