@@ -34,4 +34,13 @@ class Article extends Model
             'App\Article', 'article_article', 'article_id', 'linked_article_id'
         );
     }
+
+    /**
+     * @return BelongsToMany
+     */
+    public function tags() {
+        return $this->belongsToMany(
+            'App\Tag', 'article_tag', 'article_id', 'tag_id'
+        );
+    }
 }
