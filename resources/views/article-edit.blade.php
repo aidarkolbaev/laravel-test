@@ -5,6 +5,7 @@
 @section('form-action', '/article/' . $article->id . '/edit')
 @section('article-title', $article->title)
 @section('article-content', $article->content)
+@section('article-tags', join(',', $tags))
 
 @section('javascript')
     @parent

@@ -12,6 +12,8 @@ class Tag extends Model
       'name'
     ];
 
+    public $timestamps = false;
+
     /**
      * @return BelongsToMany
      */

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use App\User;
+use Composer\Package\Package;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -59,7 +61,8 @@ class ArticleController extends Controller
             $data = $request->validate([
                 'title' => 'required|max:255',
                 'content' => 'required',
-                'articles' => 'string|nullable'
+                'articles' => 'string|nullable',
+                'tags' => 'string|nullable'
             ]);
             $article = new Article($data);
             $articles = explode(',', $data['articles']);
@@ -68,6 +71,18 @@ class ArticleController extends Controller
                     $article->articles()->attach((int)$articleId);
                 }
             }
+
+            $tags = explode(',', $data['tags']);
+            if (count($tags)) {
+                $tagModels = [];
+                foreach ($tags as $tag) {
+                    if (is_string($tag)) {
+                        $tagModels[] = Tag::firstOrNew(['name' => trim($tag)]);
+                    }
+                }
+                $article->tags()->saveMany($tagModels);
+            }
+
 
             Auth::user()->articles()->save($article);
             return redirect('/');
@@ -93,7 +108,8 @@ class ArticleController extends Controller
             $data = $request->validate([
                 'title' => 'required|max:255',
                 'content' => 'required',
-                'articles' => 'string|nullable'
+                'articles' => 'string|nullable',
+                'tags' => 'string|nullable'
             ]);
             $article->articles()->detach();
             $articles = explode(',', $data['articles']);
@@ -103,10 +119,27 @@ class ArticleController extends Controller
                 }
             }
 
+            $article->tags()->detach();
+            $tags = explode(',', $data['tags']);
+            if (count($tags)) {
+                $tagModels = [];
+                foreach ($tags as $tag) {
+                    if (is_string($tag)) {
+                        $tagModels[] = Tag::firstOrNew(['name' => trim($tag)]);
+                    }
+                }
+                $article->tags()->saveMany($tagModels);
+            }
+
             $article->update($data);
             return redirect('/article/' . $id);
         }
-        return view('article-edit', ['article' => $article]);
+        $tags = [];
+        /** @var Tag $tag */
+        foreach ($article->tags as $tag) {
+            $tags[] = $tag->name;
+        }
+        return view('article-edit', ['article' => $article, 'tags' => $tags]);
     }
 
 

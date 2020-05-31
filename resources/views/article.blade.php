@@ -10,6 +10,15 @@
             <div class="my-2 break-all p-2 rounded bg-gray-100">
                 {!! $article->content !!}
             </div>
+            @if(count($article->tags) > 0)
+                <div class="my-1">
+                    @foreach($article->tags as $tag)
+                        <div class="inline-block mr-1 py-1 px-2 rounded bg-teal-200 text-xs text-teal-800 font-bold">
+                            #{{ $tag->name }}
+                        </div>
+                    @endforeach
+                </div>
+            @endif
             <div class="flex justify-between mt-4">
                 <div class="text-xs text-gray-600">
                     <span class="material-icons text-xs mr-1">calendar_today</span>
@@ -36,7 +45,8 @@
                     <a href="/article/{{ $linkedArticle->id }}" class="mx-2">
                         <div class="bg-white py-2 px-3 text-sm rounded-md mt-2 shadow">
                             <div class="text-teal-500">{{ $linkedArticle->title }}</div>
-                            <div class="bg-teal-200 rounded p-1 text-xs text-teal-600 my-2 flex items-center justify-center">
+                            <div
+                                class="bg-teal-200 rounded p-1 text-xs text-teal-600 my-2 flex items-center justify-center">
                                 <div class="mr-1">Читать</div>
                                 <span class="material-icons font-bold text-xs">arrow_forward_ios</span>
                             </div>

@@ -31,6 +31,13 @@
                     </div>
                 </div>
                 <div class="mt-4">
+                    <label class="block" for="tags">Тэги (через запятую)</label>
+                    <div>
+                        <input class="w-full bg-gray-100 p-1"
+                               value="@yield('article-tags')" autocomplete="off" type="text" name="tags" id="tags">
+                    </div>
+                </div>
+                <div class="mt-4">
                     <label class="block" for="search">Привязка статей</label>
                     <div class="relative">
                         <input
@@ -70,14 +77,14 @@
 
 
         let searchTimeout;
-        let result = document.getElementById('search_result');
+        let searchResult = document.getElementById('search_result');
 
         function searchArticles(elem) {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(function () {
                 let search = elem.value.trim();
                 if (search.length >= 1) {
-                    result.innerHTML = '';
+                    searchResult.innerHTML = '';
                     axios.get('/articles', {params: {title: search}})
                         .then((res) => {
                             if (res.data && res.data.length) {
@@ -89,16 +96,16 @@
                                     }
                                     elem.innerText = article.title;
                                     elem.setAttribute('data-article-id', article.id);
-                                    result.append(elem)
+                                    searchResult.append(elem)
                                 })
                             } else {
-                                result.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>'
+                                searchResult.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>'
                             }
-                            result.classList.remove('hidden');
+                            searchResult.classList.remove('hidden');
                         })
                         .catch((err) => {
-                            result.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>';
-                            result.classList.remove('hidden');
+                            searchResult.innerHTML = '<div class="p-2 text-sm">Не найдено...</div>';
+                            searchResult.classList.remove('hidden');
                         })
                 }
             }, 1000);
@@ -159,8 +166,8 @@
                 } else {
                     addLinkedArticle(article)
                 }
-            } else if (!result.classList.contains('hidden')) {
-                result.classList.add('hidden');
+            } else if (!searchResult.classList.contains('hidden')) {
+                searchResult.classList.add('hidden');
             }
         })
 
