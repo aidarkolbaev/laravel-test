@@ -1,5 +1,10 @@
 module.exports = {
-    purge: [],
+    purge: {
+        enabled: true,
+        content: [
+            './resources/views/**/*.php'
+        ]
+    },
     theme: {
         fontFamily: {
             sans: ['Ubuntu', 'sans-serif']
